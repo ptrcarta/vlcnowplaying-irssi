@@ -35,16 +35,17 @@ sub now_playing {
 #	$witem->command("me $test");
 	    $path   =~ s/\012//g;
 	    $path   = `/bin/readlink $path`;
-	    $path   = $1 if $path =~ m/(\/home.*?mp3)/;
+	    $path   = $1 if $path =~ m/(\/home.*?(mp3|flac))/;
 #	    $path   =~ s/\012//g;
 		if ($path) {
 		
 		if ($witem && ($witem->{type} eq "CHANNEL" || $witem->{type} eq "QUERY")) {	
-		my $artist  =	`mp3info -p %a "$path"`;
-		my $title   =	`mp3info -p %t "$path"`;
-		my $album   =	`mp3info -p %l "$path"`;
+		my $trackinfo	=	`id3v2 -R "$path" | awk -f "getfields.awk"`;
+		    #my $tags  =	`mp3info -p %a "$path"`;
+		    #my $title   =	`mp3info -p %t "$path"`;
+		    #my $album   =	`mp3info -p %l "$path"`;
 		my $bitrate =	`mp3info -r m -p %r "$path"`;
-		my $output = "np: \0039$artist \00312- \0035$title \00312- $album \00315| \00314$bitrate kbps"; # here set desired format of output
+		my $output = "np: $trackinfo\00315 | \00314$bitrate kbps"; # here set desired format of output
 
 			$witem->command("me $output")
 		} else {
