@@ -40,7 +40,7 @@ sub now_playing {
 		if ($path) {
 		
 		if ($witem && ($witem->{type} eq "CHANNEL" || $witem->{type} eq "QUERY")) {	
-		my $trackinfo	=	`id3v2 -R "$path" | awk -f "getfields.awk"`;
+		my $trackinfo	=	`id3v2 -R "$path" | awk -f "$ENV{"HOME"}/.irssi/scripts/getfields.awk"`;
 		    #my $tags  =	`mp3info -p %a "$path"`;
 		    #my $title   =	`mp3info -p %t "$path"`;
 		    #my $album   =	`mp3info -p %l "$path"`;
